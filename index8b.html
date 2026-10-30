@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Resmi Kelas 8B - Dragon Edition</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html, body {
+            background: linear-gradient(135deg, #2b0909 0%, #1a0505 50%, #080202 100%);
+            color: #f1f5f9;
+            min-height: 100vh;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            background-attachment: fixed;
+        }
+
+        /* --- ANIMASI INTRO VIDEO LAYAR PENUH --- */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        #intro-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-skip-intro {
+            position: absolute;
+            bottom: 70px;
+            right: 25px;
+            background: rgba(239, 68, 68, 0.9);
+            color: #fff;
+            border: 2px solid #ff4500;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 0 15px #ff4500;
+            z-index: 100000;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-skip-intro:active {
+            transform: scale(0.95);
+        }
+
+        /* --- NAGA TERBANG DARI KANAN KE KIRI --- */
+        .flying-dragon-container {
+            position: fixed;
+            top: 15%;
+            right: -250px;
+            width: 200px;
+            z-index: 999;
+            pointer-events: none;
+            animation: flyRightToLeft 12s linear infinite;
+        }
+
+        @keyframes flyRightToLeft {
+            0% { right: -250px; top: 15%; transform: scale(0.8) rotate(5deg); }
+            50% { top: 25%; transform: scale(1.1) rotate(-5deg); }
+            100% { right: 110vw; top: 10%; transform: scale(0.8) rotate(5deg); }
+        }
+
+        .dragon-svg {
+            width: 100%;
+            filter: drop-shadow(0 0 12px #ff4500) drop-shadow(0 0 25px #ff0000);
+        }
+
+        .wing-left {
+            transform-origin: 60% 50%;
+            animation: flapLeft 0.5s infinite alternate ease-in-out;
+        }
+        .wing-right {
+            transform-origin: 40% 50%;
+            animation: flapRight 0.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes flapLeft {
+            0% { transform: rotate(0deg) scaleY(1); }
+            100% { transform: rotate(-25deg) scaleY(0.6); }
+        }
+        @keyframes flapRight {
+            0% { transform: rotate(0deg) scaleY(1); }
+            100% { transform: rotate(25deg) scaleY(0.6); }
+        }
+
+        /* --- HERO & NAV LOGIN --- */
+        .top-bar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .btn-dragon-login {
+            position: relative;
+            background: linear-gradient(135deg, #4a0000, #990000, #ff4500);
+            color: #fff;
+            padding: 12px 28px 12px 50px;
+            font-size: 1rem;
+            font-weight: 800;
+            border: 2px solid #ffaa00;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.6), inset 0 0 10px rgba(255, 255, 0, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-dragon-login::before {
+            content: '🐉';
+            position: absolute;
+            left: 15px;
+            font-size: 1.4rem;
+            filter: drop-shadow(0 0 8px #ff4500);
+            animation: dragonPulse 1s infinite alternate;
+        }
+
+        @keyframes dragonPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.25) rotate(-10deg); }
+        }
+
+        .btn-dragon-login:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 25px #ff4500, 0 0 40px #ff0000;
+            border-color: #ffffff;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            background: radial-gradient(circle, rgba(153, 0, 0, 0.4) 0%, rgba(10, 0, 0, 0.9) 80%);
+            border-bottom: 2px solid #ff4500;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #ff4500, 0 0 40px #ff7700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #ffcc99;
+            margin-bottom: 20px;
+            text-shadow: 0 0 8px rgba(255, 69, 0, 0.8);
+        }
+
+        .live-clock-box {
+            background: rgba(40, 0, 0, 0.8);
+            border: 1px solid #ff4500;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #ffe6cc;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
+        }
+
+        .online-visitor-box {
+            background: rgba(185, 28, 28, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fca5a5;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #ef4444;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(0.95); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.5; }
+            100% { transform: scale(0.95); opacity: 1; }
+        }
+
+        .btn-pencet {
+            background: linear-gradient(135deg, #dc2626, #990000);
+            color: #ffffff;
+            padding: 14px 36px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 1px solid #ff4500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5);
+        }
+
+        .btn-pencet:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.8);
+        }
+
+        .scroll-hint {
+            margin-top: 25px;
+            color: #ffcc99;
+            font-size: 0.9rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-8px);}
+            60% {transform: translateY(-4px);}
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: rgba(30, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 69, 0, 0.3);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.8), 0 0 15px rgba(255, 69, 0, 0.15);
+            color: #f1f5f9;
+        }
+
+        .info-card {
+            padding: 24px;
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .info-item h3 {
+            color: #ff9966;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-item p {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 40px 0 20px 0;
+            color: #ff5500;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .grid-pengurus {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .card-pengurus {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-pengurus h4 {
+            color: #ff9966;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-pengurus p {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 4px;
+        }
+
+        .jadwal-table-container {
+            overflow-x: auto;
+            margin-bottom: 40px;
+            border-radius: 12px;
+        }
+
+        .jadwal-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(30, 5, 5, 0.9);
+            font-size: 0.85rem;
+            text-align: center;
+            min-width: 750px;
+            color: #f1f5f9;
+        }
+
+        .jadwal-table th, .jadwal-table td {
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            padding: 12px 6px;
+            vertical-align: middle;
+        }
+
+        .jadwal-table th {
+            background-color: #3b0707;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .jadwal-table th span {
+            font-size: 0.7rem;
+            color: #ffcc99;
+            font-weight: normal;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .jadwal-table td.hari-kolom {
+            font-weight: 700;
+            background-color: rgba(20, 2, 2, 0.8);
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+
+        .mapel-badge {
+            background-color: rgba(60, 10, 10, 0.6);
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            padding: 6px 4px;
+            border-radius: 6px;
+            display: block;
+        }
+
+        .mapel-nama {
+            font-weight: 700;
+            display: block;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .mapel-guru {
+            font-size: 0.7rem;
+            color: #ffcc99;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .piket-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .piket-card {
+            padding: 20px;
+        }
+
+        .piket-card.hari-ini {
+            border: 2px solid #ff4500;
+            background-color: rgba(127, 29, 29, 0.3);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.4);
+        }
+
+        .hari-badge {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 69, 0, 0.2);
+        }
+
+        .hari-nama {
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 1.1rem;
+        }
+
+        .badge-today {
+            background: #ff4500;
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .piket-card.hari-ini .badge-today {
+            display: inline-block;
+        }
+
+        .piket-list {
+            list-style: none;
+        }
+
+        .piket-list li {
+            padding: 3px 0;
+            font-size: 0.95rem;
+            color: #ffcc99;
+        }
+
+        .list-box-anggota {
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+
+        .list-box-anggota ol {
+            padding-left: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 8px 24px;
+        }
+
+        .list-box-anggota li {
+            padding: 4px 0;
+            color: #ffcc99;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .gallery-item video {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            background-color: #000;
+        }
+
+        .gallery-caption {
+            padding: 10px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #ffffff;
+            background: rgba(20, 2, 2, 0.9);
+            border-top: 1px solid rgba(255, 69, 0, 0.2);
+        }
+
+        #bg-music {
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            background: rgba(10, 2, 2, 0.95);
+            border-top: 2px solid #ff4500;
+        }
+
+        footer .admin-note {
+            font-style: italic;
+            color: #ffcc99;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        footer .creator {
+            font-weight: 700;
+            color: #ff7700;
+            font-size: 1rem;
+            text-shadow: 0 0 8px #ff0000;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2.2rem; }
+            .list-box-anggota ol { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. OVERLAY INTRO VIDEO NAGA API -->
+    <div id="intro-overlay">
+        <video id="intro-video" autoplay muted playsinline>
+            <source src="intro-naga.mp4" type="video/mp4">
+            Browser kamu tidak mendukung video.
+        </video>
+        <button class="btn-skip-intro" onclick="closeIntro()">Lewati Intro 🔥</button>
+    </div>
+
+    <!-- 2. ANIMASI NAGA BERAPI TERBANG DARI KANAN KE KIRI -->
+    <div class="flying-dragon-container">
+        <svg class="dragon-svg" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 170 80 Q 140 110 100 80 Q 70 60 40 70 Q 20 75 10 90" stroke="#ff4500" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <path d="M 100 80 Q 80 50 50 60 L 30 50 L 45 70 Z" fill="#ff2200"/>
+            <g class="wing-left">
+                <path d="M 90 70 C 70 10 30 10 10 30 C 40 40 60 55 80 75 Z" fill="#ff4500" opacity="0.9"/>
+                <path d="M 85 68 C 65 20 35 20 20 35 Q 50 45 75 70 Z" fill="#ffcc00"/>
+            </g>
+            <g class="wing-right">
+                <path d="M 110 70 C 130 10 170 10 190 30 C 160 40 140 55 120 75 Z" fill="#ff4500" opacity="0.9"/>
+                <path d="M 115 68 C 135 20 165 20 180 35 Q 150 45 125 70 Z" fill="#ffcc00"/>
+            </g>
+            <circle cx="35" cy="55" r="10" fill="#ff0000"/>
+            <polygon points="25,55 5,50 15,60" fill="#ffdd00"/>
+        </svg>
+    </div>
+
+    <audio id="bg-music" autoplay loop>
+        <source src="lagu-8b.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- TOP BAR LOGIN -->
+    <div class="top-bar">
+        <button class="btn-dragon-login" onclick="alert('Fitur Login Naga 8B Siap!')">Login 8B</button>
+    </div>
+
+    <header class="hero">
+        <h1>CLASS VIII-B</h1>
+        <p>Website Resmi Skuad Naga Api - SMP Negeri 3 Tanjung</p>
+        
+        <div class="live-clock-box" id="liveClock">
+            Memuat Waktu...
+        </div>
+
+        <div class="online-visitor-box">
+            <span class="online-dot"></span>
+            <span>👤 <strong id="onlineCount">12</strong> Orang Sedang Online Real-Time</span>
+        </div>
+
+        <a href="#main-content" class="btn-pencet" id="btnPencet">Pencet 🔥</a>
+        <div class="scroll-hint">👇 Geser ke bawah</div>
+    </header>
+
+    <div id="main-content" class="container">
+        <div class="info-card card">
+            <div class="info-item">
+                <h3>WALI KELAS</h3>
+                <p>👤 Bu Linda</p>
+            </div>
+            <div class="info-item">
+                <h3>TOTAL SISWA</h3>
+                <p>34 Orang</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">Pengurus Kelas</h2>
+        <div class="grid-pengurus">
+            <div class="card-pengurus card">
+                <h4>Ketua Kelas</h4>
+                <p>Ojan</p>
+            </div>
+            <div class="card-pengurus card">
+                <h4>Wakil Ketua</h4>
+                <p>Putri</p>
+            </div>
+            <div class="card-pengurus card">
+                <h4>Sekretaris 1</h4>
+                <p>Zulfa</p>
+            </div>
+            <div class="card-pengurus card">
+                <h4>Sekretaris 2</h4>
+                <p>Eca</p>
+            </div>
+            <div class="card-pengurus card">
+                <h4>Sekretaris 3</h4>
+                <p>azza</p>
+            </div>
+            <div class="card-pengurus card">
+                <h4>Bendahara 1</h4>
+                <p>Syifa</p>
+            </div>
+            <div class="card-pengurus card">
+                <h4>Bendahara 2</h4>
+                <p>Flora</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">Jadwal Pelajaran Semester 1 (TA 2026/2027)</h2>
+        <div class="card jadwal-table-container">
+            <table class="jadwal-table">
+                <thead>
+                    <tr>
+                        <th>Hari</th>
+                        <th>0 <span>07:00-07:10</span></th>
+                        <th>1 <span>07:10-07:50</span></th>
+                        <th>2 <span>07:50-08:30</span></th>
+                        <th>3 <span>08:30-09:10</span></th>
+                        <th>4 <span>09:25-10:05</span></th>
+                        <th>5 <span>10:05-10:45</span></th>
+                        <th>6 <span>10:45-11:25</span></th>
+                        <th>7 <span>12:10-12:40</span></th>
+                        <th>8 <span>12:40-13:10</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="hari-kolom">Senin</td>
+                        <td><div class="mapel-badge"><span class="mapel-nama">Pem</span><span class="mapel-guru">Pembiasaan</span></div></td>
+                        <td><div class="mapel-badge"><span class="mapel-nama">UB</span><span class="mapel-guru">Upacara</span></div></td>
+                        <td colspan="3"><div class="mapel-badge"><span class="mapel-nama">INFO</span><span class="mapel-guru">Hana Amalia Y., S.Pd</span></div></td>
+                        <td colspan="2"><div class="mapel-badge"><span class="mapel-nama">MTK</span><span class="mapel-guru">Moh. Nurul I., S.Pd</span></div></td>
+                        <td colspan="2"><div class="mapel-badge"><span class="mapel-nama">IPS</span><span class="mapel-guru">Ratnawati, S.Pd</span></div></td>
+                    </tr>
+                    <tr>
+                        <td class="hari-kolom">Selasa</td>
+                        <td><div class="mapel-badge"><span class="mapel-nama">Pem</span><span class="mapel-guru">Pembiasaan</span></div></td>
+                        <td colspan="3"><div class="mapel-badge"><span class="mapel-nama">SBP</span><span class="mapel-guru">Nani Aslikhati, S.P</span></div></td>
+                        <td colspan="2"><div class="mapel-badge"><span class="mapel-nama">BIG</span><span class="mapel-guru">Linda Nefta, S.Pd</span></div></td>
+                        <td><div class="mapel-badge"><span class="mapel-nama">BK</span><span class="mapel-guru">Novella W., S.Psi</span></div></td>
+                        <td colspan="2"><div class="mapel-badge"><span class="mapel-nama">BJW</span><span class="mapel-guru">Dwi Ayu S., S.Pd</span></div></td>
+                    </tr>
+                    <tr>
+                        <td class="hari-kolom">Rabu</td>
+                        <td><div class="mapel-badge"><span class="mapel-nama">Pem</span><span class="mapel-guru">Pembiasaan</span></div></td>
+                        <td colspan="4"><div class="mapel-badge"><span class="mapel-nama">IND</span><span class="mapel-guru">Tasridah, S.Pd</span></div></td>
+                        <td colspan="3"><div class="mapel-badge"><span class="mapel-nama">IPA</span><span class="mapel-guru">Fira Rosmalina, S.Pd</span></div></td>
+                        <td><div class="mapel-badge"><span class="mapel-nama">BIG</span><span class="mapel-guru">Linda Nefta, S.Pd</span></div></td>
+                    </tr>
+                    <tr>
+                        <td class="hari-kolom">Kamis</td>
+                        <td><div class="mapel-badge"><span class="mapel-nama">Pem</span><span class="mapel-guru">Pembiasaan</span></div></td>
+                        <td colspan="3"><div class="mapel-badge"><span class="mapel-nama">PAI</span><span class="mapel-guru">Mustopa, S.Pd.I</span></div></td>
+                        <td colspan="3"><div class="mapel-badge"><span class="mapel-nama">IPS</span><span class="mapel-guru">Ratnawati, S.Pd</span></div></td>
+                        <td colspan="2"><div class="mapel-badge"><span class="mapel-nama">IND</span><span class="mapel-guru">Tasridah, S.Pd</span></div></td>
+                    </tr>
+                    <tr>
+                        <td class="hari-kolom">Jum'at</td>
+                        <td><div class="mapel-badge"><span class="mapel-nama">Pem</span><span class="mapel-guru">Pembiasaan</span></div></td>
+                        <td colspan="3"><div class="mapel-badge"><span class="mapel-nama">MTK</span><span class="mapel-guru">Moh. Nurul I., S.Pd</span></div></td>
+                        <td colspan="3"><div class="mapel-badge"><span class="mapel-nama">IPA</span><span class="mapel-guru">Fira Rosmalina, S.Pd</span></div></td>
+                        <td colspan="2"><div class="mapel-badge" style="background:rgba(255,255,255,0.05); color:#94a3b8;">-</div></td>
+                    </tr>
+                    <tr>
+                        <td class="hari-kolom">Sabtu</td>
+                        <td><div class="mapel-badge"><span class="mapel-nama">Pem</span><span class="mapel-guru">Pembiasaan</span></div></td>
+                        <td colspan="3"><div class="mapel-badge"><span class="mapel-nama">PKn</span><span class="mapel-guru">Karno, S.Pd</span></div></td>
+                        <td colspan="4"><div class="mapel-badge"><span class="mapel-nama">PJOK</span><span class="mapel-guru">Warsito, S.Pd</span></div></td>
+                        <td><div class="mapel-badge"><span class="mapel-nama">PWK</span><span class="mapel-guru">Pembinaan WK</span></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="section-title">Jadwal Piket Kebersihan</h2>
+        <div class="piket-grid">
+            <div class="piket-card card" data-hari="1">
+                <div class="hari-badge">
+                    <span class="hari-nama">Senin</span>
+                    <span class="badge-today">Hari Ini</span>
+                </div>
+                <ul class="piket-list">
+                    <li>Aisyah Zulfa</li>
+                    <li>Anisah Yulyati</li>
+                    <li>Ema Aura P</li>
+                    <li>Bimo Seno</li>
+                    <li>Hazbi Alif F</li>
+                    <li>Ibnu Tsani A F</li>
+                </ul>
+            </div>
+            <div class="piket-card card" data-hari="2">
+                <div class="hari-badge">
+                    <span class="hari-nama">Selasa</span>
+                    <span class="badge-today">Hari Ini</span>
+                </div>
+                <ul class="piket-list">
+                    <li>Fadilah Mumtaza</li>
+                    <li>Fatonah Ulul A</li>
+                    <li>Flora Agni A</li>
+                    <li>Kaka Dafa P</li>
+                    <li>Micko Farendra</li>
+                    <li>Miftah Aisyah B</li>
+                </ul>
+            </div>
+            <div class="piket-card card" data-hari="3">
+                <div class="hari-badge">
+                    <span class="hari-nama">Rabu</span>
+                    <span class="badge-today">Hari Ini</span>
+                </div>
+                <ul class="piket-list">
+                    <li>Meida Nafisa</li>
+                    <li>Meyliana Dewi</li>
+                    <li>Mikayla Zafira</li>
+                    <li>M. Ikhsan A M</li>
+                    <li>M. Taofik S</li>
+                    <li>M. Nur Faiz</li>
+                </ul>
+            </div>
+            <div class="piket-card card" data-hari="4">
+                <div class="hari-badge">
+                    <span class="hari-nama">Kamis</span>
+                    <span class="badge-today">Hari Ini</span>
+                </div>
+                <ul class="piket-list">
+                    <li>Najmi Farihatun</li>
+                    <li>Nazwa Nur A</li>
+                    <li>Nola Marcelia</li>
+                    <li>M. Guntur P</li>
+                    <li>Oka Edo P</li>
+                    <li>Putra Tegar R.P</li>
+                </ul>
+            </div>
+            <div class="piket-card card" data-hari="5">
+                <div class="hari-badge">
+                    <span class="hari-nama">Jum'at</span>
+                    <span class="badge-today">Hari Ini</span>
+                </div>
+                <ul class="piket-list">
+                    <li>Putri Nur A</li>
+                    <li>Raisya Fainur P</li>
+                    <li>Refan</li>
+                    <li>Rendi Maulana</li>
+                    <li>Sari Widia H</li>
+                </ul>
+            </div>
+            <div class="piket-card card" data-hari="6">
+                <div class="hari-badge">
+                    <span class="hari-nama">Sabtu</span>
+                    <span class="badge-today">Hari Ini</span>
+                </div>
+                <ul class="piket-list">
+                    <li>Siti Syifaul A</li>
+                    <li>Stacia Wildy</li>
+                    <li>Titi Khamidah</li>
+                    <li>Vrafansyah R</li>
+                    <li>Windi</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 class="section-title">Daftar Anggota Kelas</h2>
+        <div class="list-box-anggota card">
+            <ol>
+                <li>Aisyah Zulfa</li>
+                <li>Anisah Yulyati</li>
+                <li>Ema Aura P</li>
+                <li>Bimo Seno</li>
+                <li>Hazbi Alif F</li>
+                <li>Ibnu Tsani A F</li>
+                <li>Fadilah Mumtaza</li>
+                <li>Fatonah Ulul A</li>
+                <li>Flora Agni A</li>
+                <li>Kaka Dafa P</li>
+                <li>Micko Farendra</li>
+                <li>Miftah Aisyah B</li>
+                <li>Meida Nafisa</li>
+                <li>Meyliana Dewi</li>
+                <li>Mikayla Zafira</li>
+                <li>M. Ikhsan A M</li>
+                <li>M. Taofik S</li>
+                <li>M. Nur Faiz</li>
+                <li>Najmi Farihatun</li>
+                <li>Nazwa Nur A</li>
+                <li>Nola Marcelia</li>
+                <li>M. Guntur P</li>
+                <li>Oka Edo P</li>
+                <li>Putra Tegar R.P</li>
+                <li>Putri Nur A</li>
+                <li>Raisya Fainur P</li>
+                <li>Refan</li>
+                <li>Rendi Maulana</li>
+                <li>Sari Widia H</li>
+                <li>Siti Syifaul A</li>
+                <li>Stacia Wildy</li>
+                <li>Titi Khamidah</li>
+                <li>Vrafansyah R</li>
+                <li>Windi</li>
+            </ol>
+        </div>
+
+        <!-- TOMBOL PINTASAN RUANGGURU & GEMINI -->
+        <div style="text-align: center; margin: 30px 0; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; align-items: center;">
+            <div>
+                <p style="color: #ffcc99; margin-bottom: 8px; font-size: 0.9rem;">Mau belajar dan ngerjain tugas?</p>
+                <a href="https://www.ruangguru.com" target="_blank" style="background-color: #059669; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                    📚 Ruangguru
+                </a>
+            </div>
+            <div>
+                <p style="color: #ffcc99; margin-bottom: 8px; font-size: 0.9rem;">Butuh AI yang lebih pintar?</p>
+                <a href="https://gemini.google.com" target="_blank" style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                    💡 Tanya AI Gemini
+                </a>
+            </div>
+        </div>
+
+        <!-- GAMBAR GAME PIXEL WARFARE -->
+        <div style="text-align: center; margin: 40px 0;">
+            <h2 class="section-title" style="margin-top: 0;">Area Main Game</h2>
+            <p style="color: #ffcc99; margin-bottom: 15px; font-size: 0.95rem;">Klik gambar di bawah untuk langsung mabar Pixel Warfare!</p>
+            <a href="https://www.crazygames.com/id/game/pixel-warfare" target="_blank" style="display: inline-block; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5); transition: transform 0.2s ease;">
+                <img src="pixel-warfare.jpg" alt="Pixel Warfare" style="width: 100%; max-width: 600px; display: block; border-radius: 12px;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            </a>
+        </div>
+
+        <!-- FITUR PEMUTAR VIDEO INTERAKTIF (TANPA IFRAME) -->
+        <div style="text-align: center; margin: 40px 0;">
+            <h2 class="section-title" style="margin-top: 0;">Pemutar Video Interaktif 8B</h2>
+            <p style="color: #ffcc99; margin-bottom: 20px; font-size: 0.95rem;">Pilih video di bawah untuk menontonnya di YouTube.</p>
+            
+            <div class="card" style="max-width: 700px; margin: 0 auto; padding: 20px;">
+                <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; background: #000; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);">
+                    <a id="linkUtama" href="https://youtu.be/Q0tRZ3PRzdGZtcVR" target="_blank" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block;">
+                        <img id="imgUtama" src="https://img.youtube.com/vi/Q0tRZ3PRzdGZtcVR/hqdefault.jpg" style="width: 100%; height: 100%; object-fit: cover;" alt="Video Utama">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(239, 68, 68, 0.9); color: white; padding: 10px 24px; border-radius: 30px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                            ▶ Tonton di YouTube
+                        </div>
+                    </a>
+                </div>
+
+                <div style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+                    <div onclick="gantiVideoPilihan('Q0tRZ3PRzdGZtcVR', 'Keseruan di Kelas 8B', 'Dokumentasi video kegiatan santai dan kebersamaan anak-anak kelas 8B di dalam kelas.')" style="min-width: 130px; flex: 0 0 auto; background: rgba(15, 2, 2, 0.8); border: 2px solid #ff4500; border-radius: 10px; padding: 8px; cursor: pointer; scroll-snap-align: start;">
+                        <img src="https://img.youtube.com/vi/Q0tRZ3PRzdGZtcVR/hqdefault.jpg" style="width: 100%; height: 75px; object-fit: cover; border-radius: 6px; display: block; margin-bottom: 6px;">
+                        <span style="font-size: 0.75rem; color: #fff; font-weight: bold; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Video 1</span>
+                    </div>
+                    <div onclick="gantiVideoPilihan('dQw4w9WgXcQ', 'Momen Spesial Lomba Kelas', 'Rekaman seru saat perwakilan kelas 8B mengikuti berbagai perlombaan antarkelas.')" style="min-width: 130px; flex: 0 0 auto; background: rgba(15, 2, 2, 0.8); border: 1px solid rgba(255, 69, 0, 0.3); border-radius: 10px; padding: 8px; cursor: pointer; scroll-snap-align: start;">
+                        <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" style="width: 100%; height: 75px; object-fit: cover; border-radius: 6px; display: block; margin-bottom: 6px;">
+                        <span style="font-size: 0.75rem; color: #fff; font-weight: bold; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Video 2</span>
+                    </div>
+                    <div onclick="gantiVideoPilihan('L_LUpnjgPso', 'Kompak Piket Kebersihan', 'Aksi seru regu piket harian yang membersihkan kelas bareng-bareng dengan penuh semangat.')" style="min-width: 130px; flex: 0 0 auto; background: rgba(15, 2, 2, 0.8); border: 1px solid rgba(255, 69, 0, 0.3); border-radius: 10px; padding: 8px; cursor: pointer; scroll-snap-align: start;">
+                        <img src="https://img.youtube.com/vi/L_LUpnjgPso/hqdefault.jpg" style="width: 100%; height: 75px; object-fit: cover; border-radius: 6px; display: block; margin-bottom: 6px;">
+                        <span style="font-size: 0.75rem; color: #fff; font-weight: bold; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Video 3</span>
+                    </div>
+                </div>
+
+                <div style="background: rgba(15, 2, 2, 0.8); border: 1px solid rgba(255, 69, 0, 0.3); border-radius: 12px; padding: 16px; text-align: left;">
+                    <h4 id="teksJudulVideo" style="color: #ffffff; font-size: 1.05rem; margin-bottom: 6px;">Keseruan di Kelas 8B</h4>
+                    <p id="teksDeskripsiVideo" style="color: #ffcc99; font-size: 0.85rem; line-height: 1.5;">Dokumentasi video kegiatan santai dan kebersamaan anak-anak kelas 8B di dalam kelas.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Dokumentasi Lomba Kelas</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item card">
+                <video controls><source src="lomba1.mp4" type="video/mp4">Browser kamu tidak mendukung.</video>
+                <div class="gallery-caption">Lomba Estafet Buku</div>
+            </div>
+            <div class="gallery-item card">
+                <video controls><source src="lomba2.mp4" type="video/mp4">Browser kamu tidak mendukung.</video>
+                <div class="gallery-caption">Lomba Estafet Kardus</div>
+            </div>
+            <div class="gallery-item card">
+                <video controls><source src="lomba3.mp4" type="video/mp4">Browser kamu tidak mendukung.</video>
+                <div class="gallery-caption">Lomba Balon Berpasangan</div>
+            </div>
+            <div class="gallery-item card">
+                <video controls><source src="lomba4.mp4" type="video/mp4">Browser kamu tidak mendukung.</video>
+                <div class="gallery-caption">Lomba Estafet Sarung</div>
+            </div>
+            <div class="gallery-item card">
+                <video controls><source src="lomba5.mp4" type="video/mp4">Browser kamu tidak mendukung.</video>
+                <div class="gallery-caption">Lomba Makan Kerupuk</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p class="admin-note">"Maaf kalo ada yang salah mungkin adminnya ngantuk"</p>
+        <p class="creator">Dibuat oleh: Bandi Ireng 🔥</p>
+    </footer>
+
+    <script>
+        const introVideo = document.getElementById('intro-video');
+        introVideo.addEventListener('ended', closeIntro);
+
+        function closeIntro() {
+            const overlay = document.getElementById('intro-overlay');
+            overlay.style.opacity = '0';
+            overlay.style.visibility = 'hidden';
+        }
+
+        function gantiVideoPilihan(idVideo, judul, deskripsi) {
+            document.getElementById('linkUtama').href = "https://youtu.be/" + idVideo;
+            document.getElementById('imgUtama').src = "https://img.youtube.com/vi/" + idVideo + "/hqdefault.jpg";
+            document.getElementById('teksJudulVideo').innerText = judul;
+            document.getElementById('teksDeskripsiVideo').innerText = deskripsi;
+        }
+
+        const music = document.getElementById('bg-music');
+        const btnPencet = document.getElementById('btnPencet');
+        const mainContent = document.getElementById('main-content');
+
+        btnPencet.addEventListener('click', function(e) {
+            e.preventDefault();
+            music.play().catch(() => {});
+            mainContent.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.addEventListener('click', function() {
+            music.play().catch(() => {});
+        }, { once: true });
+
+        const today = new Date().getDay();
+        const cards = document.querySelectorAll('.piket-card');
+        cards.forEach(card => {
+            if (parseInt(card.getAttribute('data-hari')) === today) {
+                card.classList.add('hari-ini');
+            }
+        });
+
+        function updateClock() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const tanggalStr = now.toLocaleDateString('id-ID', options);
+            const jamStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('liveClock').innerHTML = `📅 ${tanggalStr} | ⏰ ${jamStr}`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        let baseOnline = 11;
+        function updateOnlineVisitor() {
+            let fluctuation = Math.floor(Math.random() * 4) - 1; 
+            baseOnline += fluctuation;
+            if (baseOnline < 8) baseOnline = 9;
+            if (baseOnline > 25) baseOnline = 22;
+            document.getElementById('onlineCount').innerText = baseOnline;
+        }
+        setInterval(updateOnlineVisitor, 6000);
+    </script>
+</body>
+</html>
